@@ -14,7 +14,7 @@ typedef struct book_node{
 	struct book_node* prev;
 }book;
 
-typedef struct{
+typedef struct datenode{
 	int year;
 	int month;
 	int day;
@@ -27,58 +27,60 @@ book* tail=NULL;
 
 void menu();
 void displaybooks();
-struct book_node* create_node(int,char*,char*,char*,int,double,double);
+struct book_node* create_node(int,char*,char*,char*,date,int);
 void insert_node(struct book_node*);
 void swap(struct book_node*,struct book_node*);
 void printinfo(struct book_node*);
-struct book_node*searchbyID(int);
-struct book_node*searchbyISBN(struct book_node*, char*);
-struct book_node*searchbyyear(struct book_node*, int);
-void updatebook(struct book_node*,char ans);
-void deletebook(struct book_node*);
-int count_number();
-struct book_node*searchByISBN(char*);
-struct book_node*searchByYear(int);
+//Search
+struct book_node*searchby_Field(struct book_node*,int);
+struct book_node*searchby_ISBN(struct book_node*,int);
+struct book_node*searchby_BorrowerName(struct book_node*, char*);
+struct book_node*searchby_DueDate(struct book_node*,date);
+//Update
+void updatebook(struct book_node*,int );
+
+int searchby_ISBN(ISBN);
 int count_digits (int n,int i);
 void bubblesort();
 int mycompare(char* str1,char* str2);
 char* lower(char* str);
+
 //2. main function
 
 int main(){
 	book* newbook;
 	FILE*in,*out;
 	char ans,ans2,c;
-	int ID,year,num,flag=0,i;
-	char ISBN[50],model[20],line[100];
-	double mileage,cost;
+	int num,flag=0,i,ISBN,borrowed;
+	char BookName[50],BorrowerName[50], field[20];
+	date dueDate;
 	
 	in=fopen("myfile.txt","r");
 	if(in==NULL){
 		printf("No file existing.Please enter the three books:\n");
 	for(i=0;i<3;i++){
 		printf("\nPlease enter the book %d:\n",i+1);
-		printf("\nyou want to add a book. enter the new book's ID: ");
-				while(!scanf("%d",&ID)){
+		printf("\nyou want to add a book. enter the new book's ISBN: ");
+				while(!scanf("%d",&ISBN)){
 					fflush(stdin);
 					printf("Invalid input Please enter another one: ");
 				}
 				fflush(stdin);
-				newbook=searchbyID(ID);
+				newbook=searchby_ISBN(ISBN);
 				while(newbook){
-					printf("\nthis ID is Invalid or already exists Please enter another one: "); 
-					scanf("%d",&ID);
-					newbook=searchbyID(ID);
+					printf("\nThe book already exists. Please enter another one: "); 
+					scanf("%d",&ISBN);
+					newbook=searchby_ISBN(ISBN);
 					fflush(stdin);
 				}
-				printf("Please enter the ISBN of the book: ");
-				scanf("%s",ISBN);
+				printf("Please enter the name of the book: ");
+				scanf("%s",name);
 				fflush(stdin);
-				printf("Please enter the model: ");
-				scanf("%s",model);
+				printf("Please enter the field: ");
+				scanf("%s",field);
 				fflush(stdin);
-				printf("Please enter the year: ");
-				while(!scanf("%d",&year)){
+				printf("Please enter the date: ");
+				while(!scanf("%s",&date)){
 					fflush(stdin);
 					printf("Invalid input Please enter another one: ");
 				}
