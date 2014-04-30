@@ -44,6 +44,7 @@ int count_digits (int n,int i);
 void bubblesort();
 int mycompare(char* str1,char* str2);
 char* lower(char* str);
+date mydate(char* date);
 
 //2. main function
 
@@ -52,7 +53,7 @@ int main(){
 	FILE*in,*out;
 	char ans,ans2,c;
 	int num,flag=0,i,ISBN,borrowed;
-	char BookName[50],BorrowerName[50], field[20];
+	char BookName[50],BorrowerName[50], field[20],date[11];
 	date dueDate;
 	
 	in=fopen("myfile.txt","r");
@@ -79,32 +80,23 @@ int main(){
 				printf("Please enter the field: ");
 				scanf("%s",field);
 				fflush(stdin);
-				printf("Please enter the date: ");
-				while(!scanf("%s",&date)){
-					fflush(stdin);
-					printf("Invalid input Please enter another one: ");
-				}
-				fflush(stdin);
-				printf("Please enter the mileage: ");
-				while(!scanf("%lf",&mileage)){
-					fflush(stdin);
-					printf("Invalid input Please enter another one: ");
-				}
-				fflush(stdin);
-				printf("Please enter the cost: ");
-				while(!scanf("%lf",&cost)){
-					fflush(stdin);
-					printf("Invalid input Please enter another one: ");
-				}
-				fflush(stdin);
-				newbook=create_node(ID,ISBN,model,year,mileage,cost);
+				
+				
+				newbook=create_node(ISBN,name,field,"None","None",0);
 				insert_node(newbook);
 		}
 	}
 	else{
-		while(fgets(line, 100, in)!=NULL ){
-			sscanf(line,"%d %s %s %d %lf %c%lf", &ID, ISBN, model, &year, &mileage,&c, &cost);
-			insert_node(create_node(ID, ISBN, model, year, mileage, cost));
+		fgets(BookName, 100, in);
+		fgets(line, 100, in);
+		sscanf(line,"%d", &ISBN);
+		fgets(line, 100, in);
+		sscanf(line,"%d", &borrowed);
+		fgets(BorrowerName, 100, in);
+		fgets(date, 11, in);
+		fgets(field, 100, in);
+
+		insert_node(create_node(ISBN,name,field,BorrowerName,mydate(date),borrowed));
 			
 		}
 	}
